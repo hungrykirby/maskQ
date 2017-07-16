@@ -16,7 +16,7 @@ class Face(arrange.Arrange):
         self.sensor_nums = sensor_nums
         self.mode = mode
 
-        self.pattern = {"train": 10, "test":3, "raw": 1000}
+        self.pattern = {"train": 25, "test":10, "raw": 1000}
 
     def fetch_numbers(self, matched_group):
         is_calibration = config.is_calibration

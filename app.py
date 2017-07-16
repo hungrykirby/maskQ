@@ -16,9 +16,9 @@ face_or_words = input("face or words > ")
 def serial_loop():
     with serial.Serial('COM3', 9600, timeout=0.1) as ser:
         if face_or_words == "face":
-            arranged_data = face.Face(MODE, 3)
+            arranged_data = face.Face(MODE, config.sensor_nums)
         elif face_or_words == "words":
-            arranged_data = words.Words(MODE, 3)
+            arranged_data = words.Words(MODE, config.sensor_nums)
         arranged_data.make_dir_train_or_test(is_new) #フォルダを作成する
         try:
             while True:
