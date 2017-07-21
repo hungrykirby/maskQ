@@ -23,4 +23,4 @@ length_array = 0
 
 face_or_words = "words"
 
-sensor_nums = 3
+sensor_nums = 5
