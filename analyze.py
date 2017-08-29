@@ -14,10 +14,10 @@ import NeighborAlgorithm as na
 import SupportVectorMachine as svm
 import Calibrate
 
-config.learner = input("learner > ")
+#config.learner = input("learner > ")
 config.stream = input("is stream > ")
 config.ver = input("version > ")
-config.face_or_words = input("moment(face) or succession(words) > ")
+#config.face_or_words = input("moment(face) or succession(words) > ")
 #face_or_wordsはconfigつきとなしがある
 
 def serial_loop():
@@ -86,6 +86,8 @@ elif config.stream == "t" and config.face_or_words == "words":
             na.setup()
         elif config.learner == "svm":
             svm.setup()
+elif config.stream == "g":
+    gd.start()
 else:
     if config.learner == "svm":
         learner = svm

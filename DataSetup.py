@@ -18,10 +18,10 @@ def make_arr(mode):
         base_dir = os.getcwd()
         name_list = make_namelist(mode)
         for label,name in enumerate(name_list):
-            print(os.path.join(base_dir, mode, name))
+            #print(os.path.join(base_dir, mode, name))
             for fn in glob.glob(os.path.join(base_dir, mode, name, "*.ceps.npy")):
                 ceps = np.load(fn)
-                print(mode, label, ceps, fn)
+                #print(mode, label, ceps, fn)
                 num_ceps = len(ceps)
                 x.append(ceps)
                 y.append(label)

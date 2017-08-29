@@ -9,7 +9,11 @@ import config
 import words
 import face
 
-MODE = input("test or train > ")
+MODE = input("test, train or other > ")
+if MODE == "other":
+    username = input("username > ")
+    if username != "":
+        config.username = username
 is_new = input("renew or make new file > ")
 face_or_words = input("face or words > ")
 

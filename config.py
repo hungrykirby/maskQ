@@ -15,12 +15,13 @@ array_calibration = []
 count_calibration = 0
 calibration_numbers = None
 
-learner = "na"
+learner = "svm"
 stream = "n"
 ver = ""
 
 length_array = 0
 
-face_or_words = "words"
+face_or_words = "face"
+username = "null"
 
-sensor_nums = 5
+sensor_nums = 6

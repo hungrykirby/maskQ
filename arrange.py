@@ -57,11 +57,17 @@ class Arrange:
                 os.rename(os.path.join(os.getcwd(), self.mode), os.path.join(os.getcwd(), self.mode + str_num))
                 os.makedirs(os.path.join(os.getcwd(), self.mode))
             else:
-                pass
+                fn = os.path.join(os.getcwd(), config.username)
+                if not os.path.exists(fn):
+                    os.makedirs(fn)
 
     def write_ceps(self, ceps, filename):
-        if self.mode == "test" or self.mode == "train":
-            fn = os.path.join(os.getcwd(), self.mode, filename)
+        if True:
+            if self.mode == "test" or self.mode == "train":
+                filename_mode = self.mode
+            else:
+                filename_mode = config.username
+            fn = os.path.join(os.getcwd(), filename_mode, filename)
             if not os.path.exists(fn):
                 os.makedirs(fn)
             #base_fn,ext = os.path.splitext(fn)
@@ -70,7 +76,7 @@ class Arrange:
                 count_str = "0" + str(self.count)
             else:
                 count_str = str(self.count)
-            data_fn = os.path.join(self.mode, filename, count_str + ".ceps")
+            data_fn = os.path.join(filename_mode, filename, count_str + ".ceps")
             np.save(data_fn, ceps)
             self.count += 1
             self.count2 += 1
