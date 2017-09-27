@@ -9,6 +9,7 @@ import os
 import glob
 
 import DataSetup
+import face2data
 
 def setup():
     train_xyz, train_label, test_xyz, test_label = DataSetup.read_ceps()
@@ -46,4 +47,10 @@ def stream(svc, xyz):
     predict = svc.predict(xyz)
     #predict = len(x)
     print("predict", predict[0])
+    return predict[0]
+
+def stream_w_face(svc, xyz):
+    predict = svc.predict(xyz)
+    #print("predict", predict[0])
+    face2data.detect_face_state(predict[0])
     return predict[0]

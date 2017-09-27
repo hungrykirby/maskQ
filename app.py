@@ -18,7 +18,7 @@ is_new = input("renew or make new file > ")
 face_or_words = input("face or words > ")
 
 def serial_loop():
-    with serial.Serial('COM3', 9600, timeout=0.1) as ser:
+    with serial.Serial('COM5', 9600, timeout=0.1) as ser:
         if face_or_words == "face":
             arranged_data = face.Face(MODE, config.sensor_nums)
         elif face_or_words == "words":

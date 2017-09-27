@@ -24,4 +24,4 @@ length_array = 0
 face_or_words = "face"
 username = "null"
 
-sensor_nums = 6
+sensor_nums = 14

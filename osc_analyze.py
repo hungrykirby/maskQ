@@ -1,4 +1,7 @@
 import argparse
+from pythonosc import osc_message_builder
+from pythonosc import udp_client
+
 import math
 import serial
 
@@ -13,6 +16,7 @@ import config
 import NeighborAlgorithm as na
 import SupportVectorMachine as svm
 import Calibrate
+import GridSearch as gd
 
 #config.learner = input("learner > ")
 config.stream = input("is stream > ")
@@ -21,6 +25,20 @@ config.ver = input("version > ")
 #face_or_wordsはconfigつきとなしがある
 
 def serial_loop():
+    '''
+    OSC
+    '''
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", default="127.0.0.1",
+        help="The ip of the OSC server")
+    parser.add_argument("--port", type=int, default=12345,
+        help="The port the OSC server is listening on")
+    args = parser.parse_args()
+
+    client = udp_client.UDPClient(args.ip, args.port)
+    '''
+    Serial
+    '''
     with serial.Serial('COM5', 9600, timeout=0.1) as ser:
         between_a_and_a = False
         want_predict_num_array_raw = []
@@ -64,8 +82,17 @@ def serial_loop():
                         want_predict_num_array = []
                         between_a_and_a = False
                         ser.flushInput()
-                        #print(xyz_array)
-                        learner.stream(machine, np.array(arranged_sensor_date_list).astype(np.int64))
+                        #print(arranged_sensor_date_list[0])
+                        p_label = learner.stream(machine, np.array(arranged_sensor_date_list).astype(np.int64))
+
+                        #print(type(p_label))
+                        msg = osc_message_builder.OscMessageBuilder(address = "/emotion")
+                        msg.add_arg(int(p_label))
+                        #msg = osc_message_builder.OscMessageBuilder(address = "/raw")
+                        for a in arranged_sensor_date_list[0]:
+                            msg.add_arg(int(a))
+                        msg = msg.build()
+                        client.send(msg)
                 else:
                     pass
                     #print(type(m))

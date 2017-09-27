@@ -14,8 +14,6 @@ import NeighborAlgorithm as na
 import SupportVectorMachine as svm
 import Calibrate
 
-#config.learner = input("learner > ")
-config.stream = input("is stream > ")
 config.ver = input("version > ")
 #config.face_or_words = input("moment(face) or succession(words) > ")
 #face_or_wordsはconfigつきとなしがある
@@ -26,12 +24,7 @@ def serial_loop():
         want_predict_num_array_raw = []
         arranged_sensor_date_list = []
         count_label = 0
-        learner = None #このスコープのみで有効な学習器
-        if config.learner == "svm":
-            learner = svm
-        else:
-            learner = na
-        machine = learner.setup()
+        machine = svm.setup()
         try:
             while True:
                 s = ser.readline()
@@ -43,7 +36,6 @@ def serial_loop():
                     pass
                 if(m != None):
                     num = m.group()
-                    #print(want_predict_num_array)
                     if num == "a":
                         between_a_and_a = True
                         count_label = 0
@@ -64,36 +56,17 @@ def serial_loop():
                         want_predict_num_array = []
                         between_a_and_a = False
                         ser.flushInput()
-                        #print(xyz_array)
-                        learner.stream(machine, np.array(arranged_sensor_date_list).astype(np.int64))
+                        svm.stream_w_face(machine, np.array(arranged_sensor_date_list).astype(np.int64))
                 else:
                     pass
-                    #print(type(m))
         except:
              print("Unexpected error:", sys.exc_info()[0])
              raise
         ser.close()
 
-if config.stream == "s":
-    ser_loop = threading.Thread(target=serial_loop,name="ser_loop",args=())
-    ser_loop.setDaemon(True)
-    ser_loop.start()
-elif config.stream == "t" and config.face_or_words == "words":
-    for i in range(50,300):
-        config.length_array = i
-        print(i)
-        if config.learner == "na":
-            na.setup()
-        elif config.learner == "svm":
-            svm.setup()
-elif config.stream == "g":
-    gd.start()
-else:
-    if config.learner == "svm":
-        learner = svm
-    else:
-        learner = na
-    machine = learner.setup()
+ser_loop = threading.Thread(target=serial_loop,name="ser_loop",args=())
+ser_loop.setDaemon(True)
+ser_loop.start()
 
 def main():
     while True:
