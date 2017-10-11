@@ -6,7 +6,7 @@ import StateDate
 states_list = []
 len_max_list = 2
 len_all_state = 1000
-from_define_state = 100 #100フレーム後から判定を始める
+from_define_state = 70 #100フレーム後から判定を始める
 
 counter = 0 #global left right
 
@@ -39,13 +39,13 @@ def detect_face_state(predict):
         連続でsmileやsurprisedが出る確率は低そう
         '''
         #
-        pre_state_face = st.list_commands[len(st.list_commands) - 1]
+        pre_state_face = st.history_commands[len(st.history_commands) - 1]
         if command == "smile" or command == "surprised":
             if command == pre_state_face:
                 command = "normal"
         #
         one_bool(command)
-        print(state_face, command)
+        #print(state_face, command)
         st.change_modes(state_face)
         st.change_mode_index_counter(command)
 

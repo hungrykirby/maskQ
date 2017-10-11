@@ -19,6 +19,9 @@ face_or_words = input("face or words > ")
 
 def serial_loop():
     with serial.Serial('COM5', 9600, timeout=0.1) as ser:
+
+        setPortCount = 0
+
         if face_or_words == "face":
             arranged_data = face.Face(MODE, config.sensor_nums)
         elif face_or_words == "words":
@@ -28,12 +31,20 @@ def serial_loop():
             while True:
                 s = ser.readline()
                 m = None
+
+                if setPortCount < 100:
+                    print("waiting port now" + str(setPortCount))
+                    ser.write(bytes(str(2), 'UTF-8'))
+
                 try:
                     de = s.decode('utf-8')
                     m = re.match("\-*[\w]+", str(de))
                 except Exception as e:
                     pass
                 if(m != None):
+
+                    setPortCount = setPortCount + 1
+
                     config.is_calibration, make_serial_flush = arranged_data.fetch_numbers(m.group())
                     if make_serial_flush:
                         ser.flushInput()

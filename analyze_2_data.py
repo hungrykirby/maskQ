@@ -20,6 +20,8 @@ config.ver = input("version > ")
 
 def serial_loop():
     with serial.Serial('COM5', 9600, timeout=0.1) as ser:
+        setPortCount = 0
+
         between_a_and_a = False
         want_predict_num_array_raw = []
         arranged_sensor_date_list = []
@@ -29,18 +31,27 @@ def serial_loop():
             while True:
                 s = ser.readline()
                 m = None
+
+                if setPortCount < 100:
+                    print("waiting port now" + str(setPortCount))
+                    ser.write(bytes(str(2), 'UTF-8'))
+
                 try:
                     de = s.decode('utf-8')
                     m = re.match("\-*[\w]+", str(de))
                 except Exception as e:
                     pass
-                if(m != None):
+                if not m is None:
                     num = m.group()
+                    setPortCount = setPortCount + 1
                     if num == "a":
+
                         between_a_and_a = True
                         count_label = 0
                         want_predict_num_array_raw = []
                     elif between_a_and_a:
+                        if int(num) == 0:
+                            print("重篤なエラーがあります")
                         want_predict_num_array_raw.append(int(num))
 
                     if len(want_predict_num_array_raw) == config.sensor_nums:

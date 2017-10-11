@@ -40,6 +40,9 @@ def serial_loop():
     Serial
     '''
     with serial.Serial('COM5', 9600, timeout=0.1) as ser:
+
+        setPortCount = 0
+
         between_a_and_a = False
         want_predict_num_array_raw = []
         arranged_sensor_date_list = []
@@ -54,12 +57,20 @@ def serial_loop():
             while True:
                 s = ser.readline()
                 m = None
+
+                if setPortCount < 100:
+                    print("waiting port now" + str(setPortCount))
+                    ser.write(bytes(str(2), 'UTF-8'))
+
                 try:
                     de = s.decode('utf-8')
                     m = re.match("\-*[\w]+", str(de))
                 except Exception as e:
                     pass
                 if(m != None):
+
+                    setPortCount = setPortCount + 1
+                    
                     num = m.group()
                     #print(want_predict_num_array)
                     if num == "a":
